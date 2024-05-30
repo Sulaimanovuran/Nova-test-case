@@ -1,0 +1,32 @@
+
+image: python:3.9
+
+variables:
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+  DJANGO_SETTINGS_MODULE: gdirve.settings"
+
+cache:
+  paths:
+    - .cache/pip
+
+stages:
+  - test
+  - deploy
+
+test:
+  stage: test
+  script:
+    - pipenv run python manage.py migrate
+    - pipenv run python manage.py test
+  artifacts:
+    reports:
+      junit: report.xml
+
+deploy:
+  stage: deploy
+  only:
+    - master
+  script:
+    - git pull origin main
+    - sudo systemctl restart nginx
+    - sudo systemctl restart nova_case
