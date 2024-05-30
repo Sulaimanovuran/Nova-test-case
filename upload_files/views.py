@@ -13,7 +13,7 @@ from io import BytesIO
 
 from gdrive.settings import SCOPES, SERVICE_ACCOUNT_FILE, PARENT_FOLDER_ID
 
-"""Вариант 1 нужно каждый раз проходить интерактивную авторизацию что не подходит в нашем случае но знать полезно,
+"""Вариант 1, нужно каждый раз проходить интерактивную авторизацию, что не подходит в нашем случае но знать полезно,
     вроде"""
 # Отключаем проверку CSRF для упрощения тестирования
 @csrf_exempt
@@ -82,7 +82,7 @@ def create_upload_file(request) -> JsonResponse:
                 "name": name,
                 "parents": [PARENT_FOLDER_ID],
             }
-
+            # TODO: проверка на дубликаты
             # Создаем объект файла
             media = MediaIoBaseUpload(BytesIO(data_value.encode()), mimetype='text/plain')
             
